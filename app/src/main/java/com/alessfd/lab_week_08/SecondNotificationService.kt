@@ -3,7 +3,6 @@ package com.alessfd.lab_week_08
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.Service
 import android.content.Intent
 import android.os.Build
@@ -15,7 +14,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.alessfd.lab_week_08.MainActivity
 
 class SecondNotificationService : Service() {
     //In order to make the required notification, a service is required
@@ -89,7 +87,7 @@ class SecondNotificationService : Service() {
 //therefore we need to check for the SDK version of the device first
 //"Build.VERSION_CODES.S" stands for 'S' which is the API 31 release name
         val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            FLAG_IMMUTABLE else 0
+            PendingIntent.FLAG_IMMUTABLE else 0
 
         //Here, we're setting MainActivity into the pending Intent
         //When the user clicks the notification, they will be

@@ -7,18 +7,17 @@ import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.Service
 import android.content.Intent
 import android.os.Build
+import android.os.Handler
 import android.os.HandlerThread
 import android.os.IBinder
+import android.os.Looper
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import android.os.Handler
-import android.os.Looper
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.alessfd.lab_week_08.MainActivity
 
-class NotificationService : Service() {
+class SecondNotificationService : Service() {
     //In order to make the required notification, a service is required
     //to do the job for us in the foreground process
 
@@ -46,9 +45,9 @@ class NotificationService : Service() {
         //notification will be executed on.
         //'HandlerThread' provides the different thread for the process to be executed on,
         //while on the other hand, 'Handler' enqueues the process to HandlerThread to be executed.
-        //Here, we're instantiating a new HandlerThread called "SecondThread"
+        //Here, we're instantiating a new HandlerThread called "ThirdThread"
         //then we pass that HandlerThread into the main Handler called serviceHandler
-        val handlerThread = HandlerThread("SecondThread")
+        val handlerThread = HandlerThread("ThirdThread")
             .apply { start() }
         serviceHandler = Handler(handlerThread.looper)
     }
@@ -147,7 +146,7 @@ class NotificationService : Service() {
     String) =
         NotificationCompat.Builder(this, channelId)
             //Sets the title
-            .setContentTitle("Second worker process is done")
+            .setContentTitle("Third worker process is done")
             //Sets the content
             .setContentText("Check it out!")
             //Sets the notification icon
@@ -155,7 +154,7 @@ class NotificationService : Service() {
             //Sets the action/intent to be executed when the user clicks the notification
             .setContentIntent(pendingIntent)
             //Sets the ticker message (brief message on top of your device)
-            .setTicker("Second worker process is done, check it out!")
+            .setTicker("Third worker process is done, check it out!")
             //setOnGoing() controls whether the notification is dismissible or not by the user
             //If true, the notification is not dismissible and can only be closed by the app
             .setOngoing(true)
@@ -186,8 +185,6 @@ class NotificationService : Service() {
             //Stops the foreground service, which closes the notification
             //but the service still goes on
             stopForeground(STOP_FOREGROUND_REMOVE)
-
-            sendFinishedBroadcast()
             //Stop and destroy the service
             stopSelf()
         }
@@ -206,7 +203,7 @@ class NotificationService : Service() {
         for (i in 10 downTo 0) {
             Thread.sleep(1000L)
             //Updates the notification content text
-            notificationBuilder.setContentText("$i seconds until last warning")
+            notificationBuilder.setContentText("$i Thirds until last warning")
                 .setSilent(true)
             //Notify the notification manager about the content update
             notificationManager.notify(
@@ -223,11 +220,6 @@ class NotificationService : Service() {
         Handler(Looper.getMainLooper()).post {
             mutableID.value = Id
         }
-    }
-
-    private fun sendFinishedBroadcast() {
-        val intent = Intent("ACTION_SERVICE_FINISHED")
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
 

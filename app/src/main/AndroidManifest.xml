@@ -17,10 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LAB_WEEK_08">
-<!--        <service-->
-<!--            android:name=".SecondNotificationService"-->
-<!--            android:enabled="true"-->
-<!--            android:exported="true"></service>-->
+        <service
+            android:name=".SecondNotificationService"
+            android:enabled="true"
+            android:exported="true"></service>
         <service
             android:name=".NotificationService"
             android:enabled="true"
